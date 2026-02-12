@@ -16,52 +16,20 @@ if (Test-Path $finalpath) {
 } 
 
 if (Test-Path $path) {
-    Write-Host "Setup détecté, lancement..."
-    Push-Location $env:TEMP
-    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
-    Start-Sleep -Seconds 30
-    if (Test-Path $finalpath) {
-        Write-Host "Application installé"
-        if (Test-Path $path) {
-            Write-Host "Suppression du setup..."
-            Remove-Item $path -Force
-            if (-not (Test-Path $path)) {
-                Write-Host "Setup supprimé"
-            } else { 
-                Write-Host "Impossible de supprimer le setup"
-            }
-        }
-        Pop-Location
-        Write-Host "Script terminé"        
+    Write-Host "Setup déja présent, suppression du l'ancien setup..."
+    Remove-Item $path
+    Start-Sleep -Seconds 5
+    if (Test-Path $path) {
+        Write-Host "Impossbible de supprimer le setup, veuillez le faire à la main à $path"
     } else {
-        Write-Host "Installation échouée"
-        Pop-Location 
-        Write-Host "Script terminé" 
-    }
-    
-} else {
-    Write-Host "Setup non détecté, lancement du download..."
-    Invoke-WebRequest -Uri $url -OutFile $path
-    Write-Host "Setup téléchargé, lancement du setup..."
-    Push-Location $env:TEMP
-    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
-    Start-Sleep -Seconds 30
-    if (Test-Path $finalpath) {
-        Write-Host "Application installé"
+        Write-Host "Téléchargement du setup..."
+        Invoke-WebRequest $url -OutFile $path
+        Start-Sleep -Seconds 5
         if (Test-Path $path) {
-            Write-Host "Suppression du setup..."
-            Remove-Item $path -Force
-            if (-not (Test-Path $path)) {
-                Write-Host "Setup supprimé"
-            } else { 
-                Write-Host "Impossible de supprimer le setup"
-            }
+            Write-Host "Setup télécharger avec succès !"
+            Write-Host "Lancemenet de l'installation"
+            Push-Location $path
+            .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
         }
-        Pop-Location
-        Write-Host "Script terminé"  
-    } else {
-        Write-Host "Impossible de vérifier l'installation de l'application" 
-        Pop-Location 
-        Write-Host "Script terminé" 
     }
 }
