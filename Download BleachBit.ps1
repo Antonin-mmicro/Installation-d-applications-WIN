@@ -7,9 +7,8 @@ if (Test-Path $finalpath) {
     Write-Host "Application déjà installé"
     Write-Host "Script terminé"
     exit 0
-} else {
-    continue
-}
+} 
+
 if (Test-Path $path) {
     Write-Host "Setup détecté, lancement..."
     Set-Location $env:TEMP
