@@ -17,7 +17,7 @@ if (Test-Path $path) {
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
         if (Test-Path $path) {
-            Write-Host "Suppression du setup..." Remove-Item $path -Force
+            Write-Host "Suppression du setup..."
             Remove-Item $path -Force
             if (-not (Test-Path $path)) {
                 Write-Host "Setup supprimé"
