@@ -1,23 +1,38 @@
-$downloadPage = "https://www.onlyoffice.com/download-desktop.aspx"
+$repoOwner = "ONLYOFFICE"
+$repoName  = "DesktopEditors"
+$assetName = "DesktopEditors_x64.msi"
+$outputDir = "$env:USERPROFILE\Downloads"
 
-$tempMsi = "$env:TEMP\ONLYOFFICE-DesktopEditors-latest.msi"
+If (!(Test-Path $outputDir)) {
+    New-Item -Path $outputDir -ItemType Directory | Out-Null
+}
 
-$html = Invoke-WebRequest -Uri $downloadPage -UseBasicParsing
+$releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
+$releasesJson = Invoke-RestMethod -Uri $releasesUrl -Headers @{
+    "User-Agent" = "PowerShell"
+}
 
-$link = ($html.Links | Where-Object href -match "\.msi" | Select-Object -First 1).href
+$selectedRelease = $releasesJson |
+    Where-Object { 
+        $_.assets | Where-Object { $_.name -eq $assetName } 
+    } |
+    Sort-Object {[datetime]$_.published_at} -Descending |
+    Select-Object -First 1
 
-if (-not $link) {
-    Write-Error "Impossible de trouver un lien MSI dans la page."
+If (-not $selectedRelease) {
+    Write-Error "Impossible de trouver une release avec $assetName"
     exit 1
 }
 
-if ($link -notmatch "^https?://") {
-    $uri = [System.Uri]$html.BaseResponse.ResponseUri
-    $link = "$($uri.Scheme)://$($uri.Host)$link"
+$asset = $selectedRelease.assets | Where-Object { $_.name -eq $assetName }
+$downloadUrl = $asset.browser_download_url
+
+Write-Output "Release trouvée : $($selectedRelease.tag_name)"
+Write-Output "Téléchargement de $assetName ..."
+
+$outputFile = Join-Path $outputDir $assetName
+Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{
+    "User-Agent" = "PowerShell"
 }
 
-Write-Host "Téléchargement du MSI depuis : $link"
-
-Invoke-WebRequest -Uri $link -OutFile $tempMsi -UseBasicParsing
-
-Write-Host "Téléchargement terminé : $tempMsi"
+Write-Output "Fichier téléchargé dans : $outputFile"
