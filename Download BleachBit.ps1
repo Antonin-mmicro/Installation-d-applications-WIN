@@ -59,5 +59,9 @@ if (Test-Path $path) {
         }
         Pop-Location
         Write-Host "Script terminé"  
+    } else {
+        Write-Host "Impossible de vérifier l'installation de l'application" 
+        Pop-Location 
+        Write-Host "Script terminé" 
     }
 }
