@@ -16,12 +16,13 @@ if (Test-Path $finalpath) {
 } 
 
 if (Test-Path $path) {
-    Write-Host "Setup déja présent, suppression du l'ancien setup..."
+    Write-Host "Setup déja présent, suppression de l'ancien setup..."
     Remove-Item $path
     Start-Sleep -Seconds 5
     if (Test-Path $path) {
         Write-Host "Impossbible de supprimer le setup, veuillez le faire à la main à $path"
     } else {
+        Write-Host "Supression réussi !"
         Write-Host "Téléchargement du setup..."
         Invoke-WebRequest $url -OutFile $path
         Start-Sleep -Seconds 5
@@ -30,7 +31,35 @@ if (Test-Path $path) {
             Write-Host "Lancemenet de l'installation"
             Push-Location $env:TEMP
             .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
-            Pop-Location
+            Start-Sleep -Seconds 30
+            if (Test-Path $finalpath) {
+                Write-Host "Application installé avec succès !"
+            } else {
+                Write-Host "Erreur lors de l'installation de l'application"
+            }
+            
+        } else {
+            Write-Host "Erreur lors du téléchargement du setup"
         }
     }
+} else {
+    Write-Host "Téléchargement du setup..."
+        Invoke-WebRequest $url -OutFile $path
+        Start-Sleep -Seconds 5
+        if (Test-Path $path) {
+            Write-Host "Setup télécharger avec succès !"
+            Write-Host "Lancemenet de l'installation"
+            Push-Location $env:TEMP
+            .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
+            Start-Sleep -Seconds 30
+            if (Test-Path $finalpath) {
+                Write-Host "Application installé avec succès !"
+            } else {
+                Write-Host "Erreur lors de l'installation de l'application"
+            }
+            
+        } else {
+            Write-Host "Erreur lors du téléchargement du setup"
+        }
 }
+Pop-Location
