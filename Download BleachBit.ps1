@@ -28,8 +28,9 @@ if (Test-Path $path) {
         if (Test-Path $path) {
             Write-Host "Setup télécharger avec succès !"
             Write-Host "Lancemenet de l'installation"
-            Push-Location $path
+            Push-Location $env:TEMP
             .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
+            Pop-Location
         }
     }
 }
