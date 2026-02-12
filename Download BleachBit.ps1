@@ -17,6 +17,15 @@ if (Test-Path $path) {
     Start-Sleep -Seconds 10
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
+        if (Test-Path $path) {
+            Write-Host "Suppression du setup..." Remove-Item $path -Force
+            Remove-Item $path -Force
+            if (-not (Test-Path $path)) {
+                Write-Host "Setup supprimé"
+            } else { 
+                Write-Host "Impossible de supprimer le setup"
+            }
+        }
         Write-Host "Script terminé"        
     }
 } else {
