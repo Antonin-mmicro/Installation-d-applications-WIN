@@ -6,7 +6,8 @@ $finalpath = "C:\Program Files (x86)\BleachBit\bleachbit.exe"
 #Verification des drpots d'administrateur
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
-    Write-Host "Script terminé" exit 1 
+    Write-Host "Script terminé" 
+    exit 1 
 }
 
 if (Test-Path $finalpath) {
