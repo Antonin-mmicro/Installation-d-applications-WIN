@@ -34,7 +34,12 @@ if (Test-Path $path) {
         }
         Pop-Location
         Write-Host "Script terminé"        
+    } else {
+        Write-Host "Installation échouée" 
+        Pop-Location 
+        Write-Host "Script terminé" 
     }
+    
 } else {
     Write-Host "Setup non détecté, lancement du download..."
     Invoke-WebRequest -Uri $url -OutFile $path
