@@ -36,3 +36,7 @@ Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{
 }
 
 Write-Output "Fichier téléchargé dans : $outputFile"
+
+Write-Host "Installation de $assetName ..." 
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$outputFile`" /qn" -Wait 
+Write-Output "$assetName installé avec succès !"
