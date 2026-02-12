@@ -36,7 +36,6 @@ if (Test-Path $path) {
         Write-Host "Script terminé"        
     } else {
         Write-Host "Installation échouée"
-        Write-Host "Erreur : $($Error[0].Exception.Message)"
         Pop-Location 
         Write-Host "Script terminé" 
     }
