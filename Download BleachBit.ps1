@@ -19,7 +19,7 @@ if (Test-Path $finalpath) {
 if (Test-Path $path) {
     Write-Host "Setup détecté, lancement..."
     Push-Location $env:TEMP
-    Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
+    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
     Start-Sleep -Seconds 30
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
