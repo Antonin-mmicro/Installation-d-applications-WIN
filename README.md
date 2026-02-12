@@ -108,23 +108,6 @@ Ces scripts peuvent être utilisés dans :
 
 ---
 
-## 📌 Améliorations possibles
-
-- Ajouter une gestion d’erreurs avec `try/catch`  
-- Ajouter un système de logs (.log)  
-- Vérifier les codes de retour des installateurs  
-- Uniformiser les variables et chemins  
-- Ajouter une vérification de services prérequis si nécessaire  
-
----
-
-## 👤 Auteur
-
-Scripts développés et maintenus par :  
-**[Ton Nom / Service IT]**
-
----
-
 ## ⚠️ Avertissement
 
 Ces scripts sont fournis « en l’état ».  

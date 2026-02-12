@@ -11,7 +11,7 @@ if (Test-Path $finalpath) {
 
 if (Test-Path $path) {
     Write-Host "Setup détecté, lancement..."
-    Set-Location $env:TEMP
+    Push-Location $env:TEMP
     .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
     Start-Sleep -Seconds 20
     if (Test-Path $finalpath) {
@@ -25,6 +25,7 @@ if (Test-Path $path) {
                 Write-Host "Impossible de supprimer le setup"
             }
         }
+        Pop-Location
         Write-Host "Script terminé"        
     }
 } else {
@@ -36,6 +37,7 @@ if (Test-Path $path) {
     .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
+        Pop-Location
         Write-Host "Script terminé"  
     }
 }
