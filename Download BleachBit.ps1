@@ -19,8 +19,7 @@ if (Test-Path $finalpath) {
 if (Test-Path $path) {
     Write-Host "Setup détecté, lancement..."
     Push-Location $env:TEMP
-    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
-    Start-Sleep -Seconds 20
+    Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
         if (Test-Path $path) {
@@ -45,9 +44,8 @@ if (Test-Path $path) {
     Write-Host "Setup non détecté, lancement du download..."
     Invoke-WebRequest -Uri $url -OutFile $path
     Write-Host "Setup téléchargé, lancement du setup..."
-    Start-Sleep -Seconds 10
     Set-Location $env:TEMP
-    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
+    Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
         Pop-Location
