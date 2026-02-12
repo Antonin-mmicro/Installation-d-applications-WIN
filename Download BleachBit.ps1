@@ -46,7 +46,7 @@ if (Test-Path $path) {
     Invoke-WebRequest -Uri $url -OutFile $path
     Write-Host "Setup téléchargé, lancement du setup..."
     Set-Location $env:TEMP
-    Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
+    .\BleachBitSetup.exe /S /allusers /NoDesktopShortCut
     Start-Sleep -Seconds 30
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
