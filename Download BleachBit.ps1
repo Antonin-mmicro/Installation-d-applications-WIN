@@ -20,6 +20,7 @@ if (Test-Path $path) {
     Write-Host "Setup détecté, lancement..."
     Push-Location $env:TEMP
     Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
+    Start-Sleep -Seconds 30
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
         if (Test-Path $path) {
@@ -46,6 +47,7 @@ if (Test-Path $path) {
     Write-Host "Setup téléchargé, lancement du setup..."
     Set-Location $env:TEMP
     Start-Process -FilePath $path -ArgumentList "/S /allusers /NoDesktopShortCut" -Wait -PassThru
+    Start-Sleep -Seconds 30
     if (Test-Path $finalpath) {
         Write-Host "Application installé"
         Pop-Location
