@@ -1,6 +1,6 @@
 $repoOwner = "rustdesk"
 $repoName  = "rustdesk"
-$assetName = "rustdesk-1.4.5-x86_64.msi"
+$assetPattern = "rustdesk-*-x86_64.msi"
 $outputDir = "$env:USERPROFILE\Downloads"
 
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
@@ -9,30 +9,27 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit 1 
 }
 
-$releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
-$releasesJson = Invoke-RestMethod -Uri $releasesUrl -Headers @{
+# 🔹 URL pour la dernière release
+$latestUrl = "https://api.github.com/repos/$repoOwner/$repoName/releases/latest"
+
+$release = Invoke-RestMethod -Uri $latestUrl -Headers @{
     "User-Agent" = "PowerShell"
 }
 
-$selectedRelease = $releasesJson |
-    Where-Object { 
-        $_.assets | Where-Object { $_.name -eq $assetName } 
-    } |
-    Sort-Object {[datetime]$_.published_at} -Descending |
-    Select-Object -First 1
+# 🔹 Cherche le bon MSI (x86_64)
+$asset = $release.assets | Where-Object { $_.name -like $assetPattern }
 
-If (-not $selectedRelease) {
-    Write-Error "Impossible de trouver une release avec $assetName"
+if (-not $asset) {
+    Write-Error "Impossible de trouver un MSI correspondant dans la dernière release."
     exit 1
 }
 
-$asset = $selectedRelease.assets | Where-Object { $_.name -eq $assetName }
 $downloadUrl = $asset.browser_download_url
+$outputFile = Join-Path $outputDir $asset.name
 
-Write-Output "Release trouvée : $($selectedRelease.tag_name)"
-Write-Output "Téléchargement de $assetName ..."
+Write-Output "Dernière version trouvée : $($release.tag_name)"
+Write-Output "Téléchargement de $($asset.name)..."
 
-$outputFile = Join-Path $outputDir $assetName
 Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{
     "User-Agent" = "PowerShell"
 }
