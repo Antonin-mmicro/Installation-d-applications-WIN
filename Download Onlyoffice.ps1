@@ -3,6 +3,11 @@ $repoName  = "DesktopEditors"
 $assetName = "DesktopEditors_x64.msi"
 $outputDir = "$env:USERPROFILE\Downloads"
 
+if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
+    Write-Output "ONLYOFFICE Desktop Editors est déjà installé."
+    exit 0
+}
+
 if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     Write-Output "Le fichier $assetName existe déjà dans $outputDir."
     Write-Host "Installation de $assetName ..."
