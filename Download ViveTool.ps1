@@ -2,6 +2,12 @@ $repo = "thebookisclosed/ViVe"
 $apiUrl = "https://api.github.com/repos/$repo/releases/latest"
 $destination = "$env:TEMP\ViveTool"
 
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
+    Write-Host "Script terminé" 
+    exit 1 
+}
+
 if (-not (Test-Path $destination)) {
     New-Item -ItemType Directory -Path $destination | Out-Null
 } else {

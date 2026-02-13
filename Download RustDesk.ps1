@@ -3,6 +3,12 @@ $repoName  = "rustdesk"
 $assetName = "rustdesk-1.4.5-x86_64.msi"
 $outputDir = "$env:USERPROFILE\Downloads"
 
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
+    Write-Host "Script terminé" 
+    exit 1 
+}
+
 $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
 $releasesJson = Invoke-RestMethod -Uri $releasesUrl -Headers @{
     "User-Agent" = "PowerShell"
