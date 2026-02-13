@@ -15,7 +15,16 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     Start-Sleep -Seconds 5
     if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
         Write-Output "Installation de $assetName terminée avec succès."
-        exit 0
+        Write-Host "Suppression du fichier d'installation $assetName ..."
+        Remove-Item -Path (Join-Path $outputDir $assetName) -Force
+        Start-Sleep -Seconds 2
+        if (-not (Test-Path -Path (Join-Path $outputDir $assetName))) {
+            Write-Output "Fichier d'installation $assetName supprimé avec succès."
+            exit 0
+        } else {
+            Write-Warning "Impossible de supprimer le fichier d'installation $assetName. Veuillez le supprimer manuellement."
+            exit 1
+        }
     } else {
         Write-Error "L'installation de $assetName a échoué."
         exit 1
@@ -57,7 +66,16 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
         Start-Sleep -Seconds 5
         if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
             Write-Output "Installation de $assetName terminée avec succès."
-            exit 0
+            Write-Host "Suppression du fichier d'installation $assetName ..."
+            Remove-Item -Path (Join-Path $outputDir $assetName) -Force
+            Start-Sleep -Seconds 2
+            if (-not (Test-Path -Path (Join-Path $outputDir $assetName))) {
+                Write-Output "Fichier d'installation $assetName supprimé avec succès."
+                exit 0
+            } else {
+                Write-Warning "Impossible de supprimer le fichier d'installation $assetName. Veuillez le supprimer manuellement."
+                exit 1
+            }
         } else {
             Write-Error "L'installation de $assetName a échoué."
             exit 1
