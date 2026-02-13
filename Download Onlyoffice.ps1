@@ -3,8 +3,9 @@ $repoName  = "DesktopEditors"
 $assetName = "DesktopEditors_x64.msi"
 $outputDir = "$env:USERPROFILE\Downloads"
 
-If (!(Test-Path $outputDir)) {
-    New-Item -Path $outputDir -ItemType Directory | Out-Null
+if (Test-Path -Path (Join-Path $outputDir $assetName)) {
+    Write-Output "Le fichier $assetName existe déjà dans $outputDir."
+    exit 0
 }
 
 $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
