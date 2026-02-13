@@ -10,42 +10,55 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     Start-Sleep -Seconds 5
     if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
         Write-Output "Installation de $assetName terminée avec succès."
+        exit 0
     } else {
         Write-Error "L'installation de $assetName a échoué."
+        exit 1
     }
     
+} else {
+    $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
+    $releasesJson = Invoke-RestMethod -Uri $releasesUrl -Headers @{
+        "User-Agent" = "PowerShell"
+    }
+
+    $selectedRelease = $releasesJson |
+        Where-Object { 
+            $_.assets | Where-Object { $_.name -eq $assetName } 
+        } |
+        Sort-Object {[datetime]$_.published_at} -Descending |
+        Select-Object -First 1
+
+    If (-not $selectedRelease) {
+        Write-Error "Impossible de trouver une release avec $assetName"
+        exit 1
+    }
+
+    $asset = $selectedRelease.assets | Where-Object { $_.name -eq $assetName }
+    $downloadUrl = $asset.browser_download_url
+
+    Write-Output "Release trouvée : $($selectedRelease.tag_name)"
+    Write-Output "Téléchargement de $assetName ..."
+
+    $outputFile = Join-Path $outputDir $assetName
+    Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{
+        "User-Agent" = "PowerShell"
+    }
+    Start-Sleep -Seconds 5
+    if (Test-Path -Path $outputFile) {
+        Write-Output "Téléchargement de $assetName terminé avec succès."
+        Write-Host "Installation de $assetName ..."
+        Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$outputFile`" /qn" -Wait
+        Start-Sleep -Seconds 5
+        if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
+            Write-Output "Installation de $assetName terminée avec succès."
+            exit 0
+        } else {
+            Write-Error "L'installation de $assetName a échoué."
+            exit 1
+        }
+    } else {
+        Write-Error "Le téléchargement de $assetName a échoué."
+        exit 1
+    }
 }
-
-$releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
-$releasesJson = Invoke-RestMethod -Uri $releasesUrl -Headers @{
-    "User-Agent" = "PowerShell"
-}
-
-$selectedRelease = $releasesJson |
-    Where-Object { 
-        $_.assets | Where-Object { $_.name -eq $assetName } 
-    } |
-    Sort-Object {[datetime]$_.published_at} -Descending |
-    Select-Object -First 1
-
-If (-not $selectedRelease) {
-    Write-Error "Impossible de trouver une release avec $assetName"
-    exit 1
-}
-
-$asset = $selectedRelease.assets | Where-Object { $_.name -eq $assetName }
-$downloadUrl = $asset.browser_download_url
-
-Write-Output "Release trouvée : $($selectedRelease.tag_name)"
-Write-Output "Téléchargement de $assetName ..."
-
-$outputFile = Join-Path $outputDir $assetName
-Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{
-    "User-Agent" = "PowerShell"
-}
-
-Write-Output "Fichier téléchargé dans : $outputFile"
-
-Write-Host "Installation de $assetName ..." 
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$outputFile`" /qn" -Wait 
-Write-Output "$assetName installé avec succès !"
