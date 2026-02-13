@@ -5,7 +5,15 @@ $outputDir = "$env:USERPROFILE\Downloads"
 
 if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     Write-Output "Le fichier $assetName existe déjà dans $outputDir."
-    exit 0
+    Write-Host "Installation de $assetName ..."
+    Start-Process -FilePath "msiexec.exe" -ArgumentList "/i `"$outputDir\$assetName`" /qn" -Wait
+    Start-Sleep -Seconds 5
+    if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
+        Write-Output "Installation de $assetName terminée avec succès."
+    } else {
+        Write-Error "L'installation de $assetName a échoué."
+    }
+    
 }
 
 $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
