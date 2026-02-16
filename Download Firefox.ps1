@@ -22,9 +22,18 @@ if (Test-Path -Path $finalpath) {
 }
 
 if (Test-Path -Path $path) {
-    $acualsetup = (Get-Item $path).VersionInfo.ProductVersion
-    if ($acualsetup -eq $latest) {
-        Write-Host "Le fichier d'installation de Mozilla Firefox est déjà téléchargé et à jour."
+        Write-Host "Le fichier d'installation de Mozilla Firefox est déjà téléchargé"
+        Write-Host "Mise à jour du fichier d'installation de Mozilla Firefox..."
+        Remove-Item -Path $path -Force
+        Start-Sleep -Seconds 2
+        Invoke-WebRequest -Uri $url -OutFile $path
+        Start-Sleep -Seconds 5
+        if (Test-Path -Path $path) {
+            Write-Host "Mise à jour du fichier d'installation de Mozilla Firefox terminée avec succès."
+        } else {
+            Write-Error "La mise à jour du fichier d'installation de Mozilla Firefox a échoué."
+            exit 1
+        }
         Write-Host "Installation de Mozilla Firefox..."
         Start-Process -FilePath $path -ArgumentList "/silent" -Wait
         Start-Sleep -Seconds 5
@@ -44,13 +53,6 @@ if (Test-Path -Path $path) {
             Write-Error "L'installation de Mozilla Firefox a échoué."
             exit 1
         }
-    } else {
-        Write-Host "Le fichier d'installation de Mozilla Firefox est déjà téléchargé mais pas à jour. Version actuelle : $acualsetup, version la plus récente : $latest."
-        Write-Host "Téléchargement de la dernière version de Mozilla Firefox..."
-        Remove-Item -Path $path -Force
-        Invoke-WebRequest -Uri $url -OutFile $path
-        Start-Sleep -Seconds 5
-    }
 } else {
     Write-Host "Téléchargement de Mozilla Firefox..."
     Invoke-WebRequest -Uri $url -OutFile $path
