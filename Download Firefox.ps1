@@ -56,4 +56,29 @@ if (Test-Path -Path $path) {
     Write-Host "Téléchargement de Mozilla Firefox..."
     Invoke-WebRequest -Uri $url -OutFile $path
     Start-Sleep -Seconds 5
+    if (Test-Path -Path $path) {
+        Write-Host "Téléchargement de Mozilla Firefox terminé avec succès."
+        Write-Host "Installation de Mozilla Firefox..."
+        Start-Process -FilePath $path -ArgumentList "/silent" -Wait
+        Start-Sleep -Seconds 5
+        if (Test-Path -Path $finalpath) {
+            Write-Host "Installation de Mozilla Firefox terminée avec succès."
+            Write-Host "Suppression du fichier d'installation..."
+            Remove-Item -Path $path -Force
+            Start-Sleep -Seconds 2
+            if (-not (Test-Path -Path $path)) {
+                Write-Host "Fichier d'installation supprimé avec succès."
+                exit 0
+            } else {
+                Write-Warning "Impossible de supprimer le fichier d'installation. Veuillez le supprimer manuellement."
+                exit 1
+            }
+        } else {
+            Write-Error "L'installation de Mozilla Firefox a échoué."
+            exit 1
+        }
+    } else {
+        Write-Error "Le téléchargement de Mozilla Firefox a échoué."
+        exit 1
+    }
 }
