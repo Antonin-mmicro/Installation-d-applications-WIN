@@ -17,6 +17,7 @@ if (Test-Path -Path $finalpath) {
     } else {
         Write-Host "Mozilla Firefox est installé mais pas à jour. Version actuelle : $actual, version la plus récente : $latest."
         Write-Host "Mise à jour de Mozilla Firefox..."
+        continue
         #pass
     }
 }
