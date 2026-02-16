@@ -17,7 +17,7 @@ if (Test-Path -Path $finalpath) {
     } else {
         Write-Host "Mozilla Firefox est installé mais pas à jour. Version actuelle : $actual, version la plus récente : $latest."
         Write-Host "Mise à jour de Mozilla Firefox..."
-        continue
+
         #pass
     }
 }
@@ -52,4 +52,8 @@ if (Test-Path -Path $path) {
         Invoke-WebRequest -Uri $url -OutFile $path
         Start-Sleep -Seconds 5
     }
+} else {
+    Write-Host "Téléchargement de Mozilla Firefox..."
+    Invoke-WebRequest -Uri $url -OutFile $path
+    Start-Sleep -Seconds 5
 }
