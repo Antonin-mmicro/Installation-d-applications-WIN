@@ -8,3 +8,24 @@ if ($msiAsset) {
     Write-Host "Version :" $release.tag_name
     Write-Host "Téléchargement :" $msiAsset.browser_download_url
 }
+
+$installedVersion = "9.2.1.43"
+$githubTag = "v9.2.1"
+
+# Enlever le "v"
+$githubVersionClean = $githubTag.TrimStart("v")
+
+# Convertir en type Version
+$installed = [version]$installedVersion
+$github = [version]$githubVersionClean
+
+# Comparer uniquement Major.Minor.Build
+if ($installed.Major -eq $github.Major -and
+    $installed.Minor -eq $github.Minor -and
+    $installed.Build -eq $github.Build) {
+
+    Write-Host "Même version fonctionnelle"
+}
+else {
+    Write-Host "Versions différentes"
+}
