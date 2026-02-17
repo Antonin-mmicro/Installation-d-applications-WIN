@@ -6,11 +6,13 @@ $msiAsset = $release.assets |
 
 if ($msiAsset) {
     Write-Host "Version :" $release.tag_name
-    Write-Host "Téléchargement :" $msiAsset.browser_download_url
+    $url = $msiAsset.browser_download_url
 }
 
-$installedVersion = "9.2.1.43"
+$installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
 $githubTag = "v9.2.1"
+
+
 
 # Enlever le "v"
 $githubVersionClean = $githubTag.TrimStart("v")
