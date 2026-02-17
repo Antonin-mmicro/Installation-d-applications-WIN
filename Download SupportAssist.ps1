@@ -1,6 +1,12 @@
 $url = "https://downloads.dell.com/serviceability/catalog/SupportAssistinstaller.exe"
 $savePath = "$env:TEMP\SupportAssistinstaller.exe"
 
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
+    Write-Host "Script terminé" 
+    exit 1 
+}
+
 function Install-SupportAssist {
     Write-Host "Installation de SupportAssist ..."
     Invoke-WebRequest -Uri $url -OutFile $savePath

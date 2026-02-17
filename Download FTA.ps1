@@ -1,6 +1,12 @@
 $path = "$env:USERPROFILE\Desktop\FTA.zip"
 $finalpath = "$env:USERPROFILE\Desktop\FTA\"
 
+if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
+    Write-Host "Script terminé" 
+    exit 1 
+}
+
 if (Test-Path $finalpath) {
   Write-Host "File Type Asscociation est déja installé à l'emplacemenet $finalpath"
   exit 1
