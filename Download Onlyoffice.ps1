@@ -18,7 +18,6 @@ if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.e
 
     if ($msiAsset) {
         $version = $release.tag_name
-        $url = $msiAsset.browser_download_url
     }
 
     $installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
@@ -77,7 +76,6 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
 
     if ($msiAsset) {
         $version = $release.tag_name
-        $url = $msiAsset.browser_download_url
     }
 
     $githubTag = "$version"
