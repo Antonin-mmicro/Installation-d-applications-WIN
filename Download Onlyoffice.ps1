@@ -69,7 +69,24 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     $record = $view.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $view, $null)
     $versionsetup = $record.GetType().InvokeMember("StringData", "GetProperty", $null, $record, 1)
 
+    $release = Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases/latest"
+
+    $msiAsset = $release.assets |
+        Where-Object { $_.name -like "*x64*.msi" } |
+        Select-Object -First 1
+
+    if ($msiAsset) {
+        $version = $release.tag_name
+        $url = $msiAsset.browser_download_url
+    }
+
+    $installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
+    $githubTag = "$version"
+
+    $githubVersionClean = $githubTag.TrimStart("v")
+
     $versionsetup = [version]$versionsetup
+    $github = [version]$githubVersionClean
 
     if ($versionsetup.Major -eq $github.Major -and
         $versionsetup.Minor -eq $github.Minor -and
