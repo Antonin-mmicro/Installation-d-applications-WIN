@@ -17,4 +17,4 @@ $view = $database.GetType().InvokeMember(
 $view.GetType().InvokeMember("Execute", "InvokeMethod", $null, $view, $null)
 $record = $view.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $view, $null)
 $version = $record.GetType().InvokeMember("StringData", "GetProperty", $null, $record, 1)
-$version
+Write-Host $version
