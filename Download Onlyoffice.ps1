@@ -80,7 +80,6 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
         $url = $msiAsset.browser_download_url
     }
 
-    $installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
     $githubTag = "$version"
 
     $githubVersionClean = $githubTag.TrimStart("v")
