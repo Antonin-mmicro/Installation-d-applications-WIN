@@ -1,5 +1,5 @@
-$path = "$env:TEMP\FTA.zip"
-$finalpath = "$env:TEMP\FTA\File-Type-Association-main\main.exe"
+$path = "$env:USERPROFILE\Desktop\FTA.zip"
+$finalpath = "$env:USERPROFILE\Desktop\FTA\File-Type-Association-main\main.exe"
 
 if (Test-Path $finalpath) {
   Write-Host "File Type Asscociation est déja installé à l'emplacemenet $finalpath"
