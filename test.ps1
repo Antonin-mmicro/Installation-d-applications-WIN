@@ -21,8 +21,8 @@ $github = [version]$githubVersionClean
 
 # Comparer uniquement Major.Minor.Build
 if ($installed.Major -eq $github.Major -and
-    $installed.Minor -eq $github.Minor -and
-    $installed.Build -eq $github.Build) {
+    $installed.Minor -eq $github.Minor
+    ) {
 
     Write-Host "Même version fonctionnelle"
 }
