@@ -21,13 +21,14 @@ $github = [version]$githubVersionClean
 
 # Comparer uniquement Major.Minor.Build
 if ($installed.Major -eq $github.Major -and
-    $installed.Minor -eq $github.Minor
-    ) {
+    $installed.Minor -eq $github.Minor -and
+    $installed.Build -eq $github.Build)
+    {
 
     Write-Host "Même version fonctionnelle"
     Write-Host "Version installée : $installedVersion"
     Write-Host "Version GitHub : $githubTag"
-    Write-Host "Version Major.Minor : " $installed.Major $installed.Minor
+    Write-Host "Version Major.Minor : " $installed.Major $installed.Minor $installed.Build
 }
 else {
     Write-Host "Versions différentes"
