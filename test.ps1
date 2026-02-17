@@ -25,6 +25,9 @@ if ($installed.Major -eq $github.Major -and
     ) {
 
     Write-Host "Même version fonctionnelle"
+    Write-Host "Version installée : $installedVersion"
+    Write-Host "Version GitHub : $githubTag"
+    Write-Host "Version Major.Minor : $installed.Major.$installed.Minor"
 }
 else {
     Write-Host "Versions différentes"
