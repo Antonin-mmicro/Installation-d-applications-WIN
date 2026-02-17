@@ -10,8 +10,41 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 }
 
 if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
-    Write-Output "ONLYOFFICE Desktop Editors est déjà installé."
-    exit 0
+    $release = Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases/latest"
+
+    $msiAsset = $release.assets |
+        Where-Object { $_.name -like "*x64*.msi" } |
+        Select-Object -First 1
+
+    if ($msiAsset) {
+        $version = $release.tag_name
+        $url = $msiAsset.browser_download_url
+    }
+
+    $installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
+    $githubTag = "$version"
+
+
+
+    # Enlever le "v"
+    $githubVersionClean = $githubTag.TrimStart("v")
+
+    # Convertir en type Version
+    $installed = [version]$installedVersion
+    $github = [version]$githubVersionClean
+
+    # Comparer uniquement Major.Minor.Build
+    if ($installed.Major -eq $github.Major -and
+        $installed.Minor -eq $github.Minor -and
+        $installed.Build -eq $github.Build)
+    {
+        Write-Host "Onlyoffice est déjà installé et à jour."
+        exit 0
+    } else {
+        Write-Host "Onlyoffice est installé mais pas à jour. Version actuelle : $installedVersion, version la plus récente : $githubTag."
+        Write-Host "Mise à jour de Onlyoffice..."
+        #pass
+    }
 }
 
 if (Test-Path -Path (Join-Path $outputDir $assetName)) {
