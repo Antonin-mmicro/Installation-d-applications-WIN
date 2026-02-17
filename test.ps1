@@ -5,12 +5,12 @@ $msiAsset = $release.assets |
     Select-Object -First 1
 
 if ($msiAsset) {
-    Write-Host "Version :" $release.tag_name
+    $version = $release.tag_name
     $url = $msiAsset.browser_download_url
 }
 
 $installedVersion = (Get-Item "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe").VersionInfo.ProductVersion
-$githubTag = "v9.2.1"
+$githubTag = "$version"
 
 
 
