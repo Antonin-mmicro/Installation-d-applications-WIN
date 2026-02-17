@@ -1,4 +1,4 @@
-$selectedRelease = (Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases").tag_name
+$releasesJson = (Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases").tag_name
 
 $selectedRelease = $releasesJson |
         Where-Object { 
@@ -7,4 +7,4 @@ $selectedRelease = $releasesJson |
         Sort-Object {[datetime]$_.published_at} -Descending |
         Select-Object -First 1
 
-Write-Host "$selectedRelease"
+Write-Host "$releaseJson"
