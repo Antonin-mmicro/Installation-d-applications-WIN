@@ -1,13 +1,13 @@
 $installed = Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* ,
                                HKLM:\Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* `
                                -ErrorAction SilentlyContinue |
-Where-Object { $_.DisplayName -like "*SupportAssist*" }
+Where-Object { $_.DisplayName -eq "Dell SupportAssist" }
 
 if ($installed) {
-    Write-Output "SupportAssist est installé."
+    Write-Output "Dell SupportAssist est installé."
     exit 0
 }
 else {
-    Write-Output "SupportAssist n'est pas installé."
+    Write-Output "Dell SupportAssist n'est pas installé."
     exit 1
 }
