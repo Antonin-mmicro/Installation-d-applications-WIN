@@ -1,10 +1,12 @@
-$releasesJson = (Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases").tag_name
+$assetName = "DesktopEditors"
+
+$releasesJson = Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases"
 
 $selectedRelease = $releasesJson |
-        Where-Object { 
-            $_.assets | Where-Object { $_.name -eq $assetName } 
-        } |
-        Sort-Object {[datetime]$_.published_at} -Descending |
-        Select-Object -First 1
+    Where-Object {
+        $_.assets.name -contains $assetName
+    } |
+    Sort-Object published_at -Descending |
+    Select-Object -First 1
 
-Write-Host "$selectedRelease"
+Write-Host $selectedRelease.tag_name
