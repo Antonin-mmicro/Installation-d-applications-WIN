@@ -6,7 +6,8 @@ $msiAsset = $release.assets |
 
 if ($msiAsset) {
     Write-Host "Version :" $release.tag_name
-    Write-Host "MSI :" $msiAsset.browser_download_url
+    $url = $msiAsset.browser_download_url
+    Write-Host "MSI :" $url
 }
 else {
     Write-Host "Aucun MSI trouvé."
