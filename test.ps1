@@ -7,4 +7,4 @@ $selectedRelease = $releasesJson |
         Sort-Object {[datetime]$_.published_at} -Descending |
         Select-Object -First 1
 
-Write-Host "$releaseJson"
+Write-Host "$selectedRelease"
