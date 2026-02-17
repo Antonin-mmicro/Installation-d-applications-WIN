@@ -1,5 +1,13 @@
 $url = "https://downloads.dell.com/serviceability/catalog/SupportAssistinstaller.exe"
 $savePath = "$env:TEMP\SupportAssistinstaller.exe"
+$biosManufacturer = (Get-CimInstance -ClassName Win32_BIOS).Manufacturer
+
+if ($biosManufacturer -like "*Dell Inc*") {
+    Write-Host "Le fabricant du BIOS est Dell Inc. Exécution du script d'installation de SupportAssist."
+} else {
+    Write-Warning "Le fabricant du BIOS n'est pas Dell Inc. Le script d'installation de SupportAssist ne sera pas exécuté."
+    exit 1
+}
 
 if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "Ce script doit être exécuté en tant qu'administrateur." 
