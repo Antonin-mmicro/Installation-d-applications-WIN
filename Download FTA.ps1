@@ -1,5 +1,5 @@
 $path = "$env:USERPROFILE\Desktop\FTA.zip"
-$finalpath = "$env:USERPROFILE\Desktop\FTA\File-Type-Association-main\main.exe"
+$finalpath = "$env:USERPROFILE\Desktop\FTA\"
 
 if (Test-Path $finalpath) {
   Write-Host "File Type Asscociation est déja installé à l'emplacemenet $finalpath"
