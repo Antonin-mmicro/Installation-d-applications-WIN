@@ -9,7 +9,7 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     exit 1 
 }
 
-if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors") {
+if (Test-Path -Path "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe") {
     $release = Invoke-RestMethod "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases/latest"
 
     $msiAsset = $release.assets |
