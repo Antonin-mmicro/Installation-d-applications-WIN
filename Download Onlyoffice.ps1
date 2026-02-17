@@ -120,6 +120,10 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
         $view   = $null
         $database = $null
         $installer = $null
+
+        [System.GC]::Collect()
+        [System.GC]::WaitForPendingFinalizers()
+        Start-Sleep -Milliseconds 500
         Remove-Item -Path (Join-Path $outputDir $assetName) -Force
         Start-Sleep -Seconds 2
         $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
