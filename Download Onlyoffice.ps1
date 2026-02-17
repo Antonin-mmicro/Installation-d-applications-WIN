@@ -116,6 +116,10 @@ if (Test-Path -Path (Join-Path $outputDir $assetName)) {
     } else {
         Write-Host "Le fichier d'installation $assetName est déjà téléchargé mais pas à jour. Version actuelle : $versionsetup, version la plus récente : $githubTag."
         Write-Host "Mise à jour du fichier d'installation $assetName ..."
+        $record = $null
+        $view   = $null
+        $database = $null
+        $installer = $null
         Remove-Item -Path (Join-Path $outputDir $assetName) -Force
         Start-Sleep -Seconds 2
         $releasesUrl  = "https://api.github.com/repos/$repoOwner/$repoName/releases"
