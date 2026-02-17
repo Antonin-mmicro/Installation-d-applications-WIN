@@ -23,14 +23,10 @@ $github = [version]$githubVersionClean
 if ($installed.Major -eq $github.Major -and
     $installed.Minor -eq $github.Minor -and
     $installed.Build -eq $github.Build)
-    {
-
-    Write-Host "Même version fonctionnelle"
-    Write-Host "Version installée : $installedVersion"
-    Write-Host "Version GitHub : $githubTag"
-    Write-Host "Version Major.Minor.Build : " $installed.Major"."$installed.Minor"."$installed.Build
-    Write-Host "Version GitHub Major.Minor.Build : " $github.Major"."$github.Minor"."$github.Build
-}
-else {
-    Write-Host "Versions différentes"
+{
+    Write-Host "La version installée ($installedVersion) est à jour par rapport à la version GitHub ($githubTag)."
+    exit 0
+} else {
+    Write-Host "La version installée ($installedVersion) n'est pas à jour par rapport à la version GitHub ($githubTag)."
+    exit 1
 }
