@@ -1,0 +1,1 @@
+(Invoke-RestMethod "https://product-details.mozilla.org/1.0/firefox_versions.json").tag_name
