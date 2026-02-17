@@ -11,7 +11,7 @@ function Install-SupportAssist {
     Write-Host "Installation de SupportAssist ..."
     Invoke-WebRequest -Uri $url -OutFile $savePath
     Start-Process -FilePath "$savePath" -ArgumentList "/silent" -Wait
-    if (Test-Path -Path "C:\Program Files\Dell\SupportAssist") {
+    if (Test-Path -Path "C:\Program Files\Dell\SupportAssistAgent") {
         Write-Output "Installation de SupportAssist terminée avec succès."
         Write-Host "Suppression du fichier d'installation SupportAssistinstaller.exe ..."
         Remove-Item -Path $savePath -Force
@@ -28,7 +28,7 @@ function Install-SupportAssist {
     }
 }
 
-if (Test-Path -Path "C:\Program Files\Dell\SupportAssist") {
+if (Test-Path -Path "C:\Program Files\Dell\SupportAssistAgent") {
     Write-Output "SupportAssist est déjà installé."
     exit 0
 } else {
