@@ -39,7 +39,7 @@ function DownloadSetup() {
 }
 
 function InstallSetup {
-    Start-Process msiexec.exe -ArgumentList "/i `"$path`" /qn /norestart " -Wait -PassThru
+    Start-Process msiexec.exe -ArgumentList "/i `"$path`" /qn /norestart" -PassThru | Wait-Process
 }
 
 
