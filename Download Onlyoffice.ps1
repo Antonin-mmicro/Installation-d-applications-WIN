@@ -47,8 +47,13 @@ function InstallSetup {
 
 if(Test-Path -Path $finalpath) {
     Write-Host "Application déjà installé, verification de la version..."
-    $finalversion = (Get-Item 'C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe').VersionInfo.ProductVersion
-    Write-Host $finalversion
+    $finalversion = (Get-Item 'C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe').VersionInfo.ProductVersion -replace '\.\d+$'
+    if($latestVersion -eq $finalversion) {
+        Write-Host "Application déjà à jour, fermeture du script..."
+        exit 0
+    } else {
+        Write-Host "Application non à jour, verification du setup..."
+    }
 }
 
 
@@ -64,12 +69,15 @@ if(Test-Path -Path $path) {
             Write-Host "Installation de l'application..."
             InstallSetup
         } else {
-            Write-Host "Le fichier est corrompu"
+            Write-Host "Le fichier est corrompu; suppression et installation du nouveau..."
+            Remove-Item $path
+            DownloadSetup
         }
     } else {
         Write-Host "❌| local : $version | online : $latestVersion |"
         Start-Sleep(1)
         Write-Host "Le setup n'est pas à jour, suppression et téléchargement du nouveau..."
+        Remove-Item $path
         DownloadSetup
     }
     exit 0
