@@ -6,6 +6,7 @@ $assetName = "DesktopEditors_x64.msi"
 $outputDir = "$env:TEMP"
 $api = "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases"
 $path = (Get-ChildItem -Path "C:\" -Recurse -Filter "DesktopEditors_x64.msi" -ErrorAction SilentlyContinue | Select-Object -First 1).FullName
+$finalpath = "C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe"
 $outputFile = "$env:TEMP\DesktopEditors_x64.msi"
 
 # $installer = New-Object -ComObject WindowsInstaller.Installer; $db = $installer.OpenDatabase("C:\Users\LabDattoWin11\Downloads\DesktopEditors_x64.msi", 0); $view = $db.OpenView("SELECT Value FROM Property WHERE Property='ProductVersion'"); $view.Execute(); $view.Fetch().StringData(1) -replace '\.\d+$'
@@ -15,6 +16,8 @@ if (-not ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
     Write-Host "Script terminé" 
     exit 1 
 }
+
+
 
 #Derniere version
 $release = Invoke-RestMethod -Uri "https://api.github.com/repos/ONLYOFFICE/DesktopEditors/releases/latest" -Headers @{
@@ -31,6 +34,7 @@ function DownloadSetup() {
     $downloadUrl = $asset.browser_download_url
     Write-Host "Téléchargement de $assetName version $($release.tag_name)..."
     Invoke-WebRequest -Uri $downloadUrl -OutFile $outputFile -Headers @{"User-Agent"="PowerShell"}
+    $path = $outputFile
     Write-Host "Téléchargement terminé."
 }
 
@@ -41,7 +45,11 @@ function InstallSetup {
 
 
 
-
+if(Test-Path -Path $finalpath) {
+    Write-Host "Application déjà installé, verification de la version..."
+    $finalversion = (Get-Item 'C:\Program Files\ONLYOFFICE\DesktopEditors\DesktopEditors.exe').VersionInfo.ProductVersion
+    Write-Host $finalversion
+}
 
 
 
@@ -53,7 +61,7 @@ if(Test-Path -Path $path) {
     if ($latestVersion -eq $version) {
         if ($latestSize -eq $localSize){
             Write-Host "✅| local : $version | online : $latestVersion |"
-            Write-Host "Installation de l'application"
+            Write-Host "Installation de l'application..."
             InstallSetup
         } else {
             Write-Host "Le fichier est corrompu"
